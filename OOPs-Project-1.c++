@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include<windows.h>
 using namespace std;
 
 class BankingSystem
@@ -24,11 +25,19 @@ public:
     }
     void OptionMenu();
     void CustomerData();
+    void DisplayDetails();
+    void UpdateDetails();
+    void FindCustomer();
+    void DeleteCustomer();
+    void Transaction();
 };
 
 int main()
 {
-    BankingSystem;
+    BankingSystem start;
+    start.OptionMenu();
+
+    return 0;
 }
 
 void BankingSystem::OptionMenu()
@@ -50,6 +59,9 @@ void BankingSystem::OptionMenu()
     {
     case '1':
         BankingSystem ::CustomerData();
+        break;
+    case '2':
+        BankingSystem ::DisplayDetails();
         break;
     }
 }
@@ -76,3 +88,224 @@ void BankingSystem::CustomerData()
     cin >> CustomerDetails[CustomerCount].CurrentAmount;
     CustomerCount++;
 }
+
+void BankingSystem ::DisplayDetails()
+{
+
+    for (int i = 0; i < CustomerCount; i++)
+    {
+
+        cout << "............:Customer Information :............." << i + 1 << endl;
+
+        cout << "Customer Full Name :--> " << CustomerDetails[i].CustomerFirstName << " " << CustomerDetails[i].CustomerSecondName << endl;
+        cout << "Customer's User ID :--> " << CustomerDetails[i].UserID << endl;
+        cout << "Customer Full Address :--> " << CustomerDetails[i].CustomerAddress << endl;
+        cout << "Customer Contact Details :--> " << CustomerDetails[i].UserContactdetails << endl;
+        cout << "Customer Current Balance :--> " << CustomerDetails[i].CurrentAmount << endl;
+    }
+}
+
+void BankingSystem ::UpdateDetails()
+{
+    cout << "Enter the AccountID of Customer :--> " << endl;
+    cin >> AccountID;
+
+    for (int i = 0; i < CustomerCount; i++)
+    {
+        if (AccountID == CustomerDetails[i].UserID)
+        {
+
+            cout << "Current Details of Customer :............" << endl;
+
+            cout << "Customer Information " << i + 1 << endl;
+            cout << "Customer Full Name :--> " << CustomerDetails[i].CustomerFirstName << " " << CustomerDetails[i].CustomerSecondName << endl;
+            cout << "Customer's User ID :--> " << CustomerDetails[i].UserID << endl;
+            cout << "Customer Full Address :--> " << CustomerDetails[i].CustomerAddress << endl;
+            cout << "Customer Contact Details :--> " << CustomerDetails[i].UserContactdetails << endl;
+            cout << "Customer Current Balance :--> " << CustomerDetails[i].CurrentAmount << endl;
+
+            cout << "\nEnter new data" << endl;
+
+            cout << "Enter First name: ";
+            cin >> CustomerDetails[i].CustomerFirstName;
+
+            cout << "Enter Last Name: ";
+            cin >> CustomerDetails[i].CustomerSecondName;
+
+            cout << "Enter Your UserID : ";
+            cin >> CustomerDetails[i].UserID;
+
+            cout << "Enter Your Address: ";
+            cin >> CustomerDetails[i].CustomerAddress;
+
+            cout << "Enter Your Contact Details : ";
+            cin >> CustomerDetails[i].UserContactdetails;
+
+            cout << "Current Amount : ";
+            cin >> CustomerDetails[i].CurrentAmount;
+
+            break;
+        }
+
+        if (i == CustomerCount - 1)
+        {
+
+            cout << " !! Worng Details Entered !! " << endl;
+            cout << " OR " << endl;
+            cout << " No User Found " << endl;
+        }
+    }
+}
+
+void BankingSystem ::FindCustomer()
+{
+
+    cout << "Enter the UserID of Customer :-->" << endl;
+    cin >> AccountID;
+
+    for (int i = 0; i < CustomerCount; i++)
+    {
+        if (AccountID == CustomerDetails[i].UserID)
+        {
+            cout << "Customer Information " << i + 1 << endl;
+            cout << "Customer Full Name :--> " << CustomerDetails[i].CustomerFirstName << " " << CustomerDetails[i].CustomerSecondName << endl;
+            cout << "Customer's User ID :--> " << CustomerDetails[i].UserID << endl;
+            cout << "Customer Full Address :--> " << CustomerDetails[i].CustomerAddress << endl;
+            cout << "Customer Contact Details :--> " << CustomerDetails[i].UserContactdetails << endl;
+            cout << "Customer Current Balance :--> " << CustomerDetails[i].CurrentAmount << endl;
+
+            break;
+        }
+
+        if (i == CustomerCount - 1)
+        {
+            cout << " !! Worng Details Entered !! " << endl;
+            cout << " OR " << endl;
+            cout << " No User Found " << endl;
+        }
+    }
+}
+void BankingSystem::Transaction()
+{
+    int cash;
+    char choice;
+
+    cout << "Enter id of student those data you want to transaction" << endl;
+    cin >> AccountID;
+
+    for (int i = 0; i < CustomerCount; i++)
+    {
+        if (AccountID == CustomerDetails[i].UserID)
+        {
+            cout << "Customer Full Name :--> " << CustomerDetails[i].CustomerFirstName << " " << CustomerDetails[i].CustomerSecondName << endl;
+            cout << "Customer Full Address :--> " << CustomerDetails[i].CustomerAddress << endl;
+            cout << "Customer Contact Details :--> " << CustomerDetails[i].UserContactdetails << endl;
+            cout << "Customer Current Balance :--> " << CustomerDetails[i].CurrentAmount << endl;
+
+            cout << "Press 1 For deposit :-> " << endl;
+            cout << "Press 2 For withdraw :-> " << endl;
+
+            choice = getch();
+
+            switch (choice)
+            {
+            case '1':
+
+                cout << "How much cash you want to deposit??" << endl;
+                cin >> cash;
+
+                CustomerDetails[i].CurrentAmount += cash;
+                cout << "Your Current Balance is :--> " << CustomerDetails[i].CurrentAmount << endl;
+                break;
+
+            case '2':
+                back:
+                cout << "How much cash you want to withdraw??" << endl;
+
+                cin >> cash;
+
+                if (cash > CustomerDetails[i].CurrentAmount)
+                {
+                    cout << "Your existing cash is just " << CustomerDetails[i].CurrentAmount << endl;
+                    Sleep(3000);
+                    goto back;
+                }
+
+                CustomerDetails[i].CurrentAmount -= cash;
+                cout << "Your new cash is " << CustomerDetails[i].CurrentAmount << endl;
+                break;
+
+            default:
+                cout << "Invalid input" << endl;
+                break;
+            }
+            break;
+        }
+
+        if (i == CustomerCount - 1)
+        {
+            cout << "No such record found" << endl;
+        }
+    }
+}
+
+void BankingSystem::DeleteCustomer()
+{
+
+    char choice;
+
+    cout << "Press -> 1 For Remove Specific Record :-> " << endl;
+    cout << "Press -> 2 For Delete full CustomerDetails :-> " << endl;
+    choice = getch();
+
+    switch (choice)
+    {
+
+    case '1':
+
+        cout << "Enter id of student those data you want to remove" << endl;
+        cin >> AccountID;
+        for (int i = 0; i < CustomerCount; i++)
+        {
+            if (AccountID == CustomerDetails[i].UserID)
+            {
+                for (int j = i; j < CustomerCount; j++)
+                {
+                    CustomerDetails[j].CustomerFirstName = CustomerDetails[j + 1].CustomerFirstName;
+
+                    CustomerDetails[j].CustomerSecondName = CustomerDetails[j + 1].CustomerSecondName;
+
+                    CustomerDetails[j].UserID = CustomerDetails[j + 1].UserID;
+
+                    CustomerDetails[j].CustomerAddress = CustomerDetails[j + 1].CustomerAddress;
+
+                    CustomerDetails[j].UserContactdetails = CustomerDetails[j + 1].UserContactdetails;
+
+                    CustomerDetails[j].CurrentAmount = CustomerDetails[j + 1].CurrentAmount;
+
+                    CustomerCount--;
+
+                    cout << "Your required data is deleted" << endl;
+
+                    break;
+                }
+            }
+
+            if (i = CustomerCount - 1)
+            {
+                cout << "No such record found" << endl;
+            }
+        }
+        break;
+
+    case '2':
+
+        CustomerCount = 0;
+        cout << "All record is deleted" << endl;
+        break;
+
+    default:
+        cout << "Invalid Input" << endl;
+        break;
+    }
+}/*DOCS*/
